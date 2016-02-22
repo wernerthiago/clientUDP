@@ -16,8 +16,8 @@ public:
 	virtual ~Socket();
 	bool Open(Address address);
 	void Close();
-	bool Send(Address address, const void * data);
-	const void * Receive(Address sender, void* data);
+	bool Send(Address address,  std::string data);
+	std::string Receive(Address sender,  std::string data);
 private:
 	int fd;
 };

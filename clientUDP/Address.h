@@ -9,24 +9,37 @@
 #define ADDRESS_H_
 
 #include <netinet/in.h>
+#include <string>
+#include <sstream>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <string.h>
+#include <string>
+#include <iostream>
+#include <unistd.h>
 
 class Address {
 public:
 	Address();
 	Address(unsigned char a, unsigned char b, unsigned char c, unsigned char d, unsigned short port);
 	Address(unsigned int address,unsigned short port);
-	const char GetAddress();
+	std::string GetAddress();
 	unsigned char GetA() const;
 	unsigned char GetB() const;
 	unsigned char GetC() const;
 	unsigned char GetD() const;
-	sockaddr_in GetAddr(){
-		return this->myaddr;
-	}
+//	struct sockaddr_in GetAddr(){
+//		return myaddr;
+//	}
 	unsigned short GetPort() const;
+	struct sockaddr_in myaddr;
 private:
-	sockaddr_in myaddr;
-	const char * address;
+	std::string address;
 	unsigned short port;
 };
 

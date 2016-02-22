@@ -6,17 +6,6 @@
  */
 
 #include "Socket.h"
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <iomanip>
-#include <stdlib.h>
-#include <string.h>
-#include <string>
-#include <iostream>
-#include <unistd.h>
 
 using namespace std;
 
@@ -33,12 +22,12 @@ bool Socket::Open(Address address) {
 	if((this->fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))<0) {
 		return false;
 	}else{
-		if(bind(this->fd,( struct sockaddr *) &address.GetAddr(), sizeof(address.GetAddr()))<0) {
+		if(bind(this->fd,( struct sockaddr *) &address.myaddr, sizeof(address.myaddr))<0) {
 			std::cout << "Erro no bind" << std::endl;
 			return false;
 		}
-		inet_pton(AF_INET,address.GetAddress(),&address.GetAddr().sin_addr.s_addr);
-		address.GetAddr().sin_port=htons(1234);
+		inet_pton(AF_INET,address.GetAddress(),&address.myaddr.sin_addr.s_addr);
+		address.myaddr.sin_port=htons(1234);
 		return true;
 	}
 }
@@ -47,8 +36,8 @@ void Socket::Close() {
 	close(this->fd);
 }
 
-bool Socket::Send(Address address, const void * data) {
-	if(sendto(this->fd, data, sizeof(data), 0, (struct sockaddr *)&address.GetAddr(), sizeof(address.GetAddr()))!=sizeof(data)){
+bool Socket::Send(Address address, std::string data) {
+	if(sendto(this->fd, data, data.size(), 0, (struct sockaddr *)&address.myaddr, sizeof(address.myaddr))!=data.size()){
 		std::cout << "Erro no envio do pacote!" << std::endl;
 		return false;
 	}else{
@@ -56,10 +45,10 @@ bool Socket::Send(Address address, const void * data) {
 	}
 }
 
-const void * Socket::Receive(Address sender, void * data) {
-	int received = 0;
-	int addrLength(sizeof(sender.GetAddr()));
-	if((received=recvfrom(this->fd, data, sizeof(data), 0, (sockaddr *)&sender.GetAddr(),(socklen_t*)&addrLength)) < 0) {
+std::string Socket::Receive(Address sender,  std::string data) {
+	int received(0);
+	int addrLength = sizeof(sender.myaddr);
+	if((received = recvfrom(this->fd,data,data.size(),0,(sockaddr *)&sender.myaddr,(socklen_t*)&addrLength)) < 0) {
 		std::cout << "Erro na recepcao do pacote!" << std::endl;
 		return 0;
 	}else{

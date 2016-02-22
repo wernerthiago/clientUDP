@@ -43,7 +43,7 @@
 //	//send the message to server
 //	int i = 1;
 //	while(i<11){
-//		if(sendto(sock, s.c_str(), s.size(), 0, (struct sockaddr *)&myaddr, sizeof(myaddr))!=s.size()) {
+//		if(sendto(sock, s.c_str(), s.size(), 0,(struct sockaddr *)&myaddr, sizeof(myaddr))!=s.size()) {
 //			perror("Mismatch in number of bytes sent");
 //			std::cout << "Erro no envio do pacote!" << std::endl;
 //			exit(EXIT_FAILURE);
