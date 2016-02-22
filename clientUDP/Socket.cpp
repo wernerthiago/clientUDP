@@ -6,7 +6,6 @@
  */
 
 #include "Socket.h"
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -17,6 +16,7 @@
 #include <string.h>
 #include <string>
 #include <iostream>
+#include <unistd.h>
 
 using namespace std;
 
@@ -37,7 +37,7 @@ bool Socket::Open(Address address) {
 			std::cout << "Erro no bind" << std::endl;
 			return false;
 		}
-		inet_pton(AF_INET,(const char *)address.GetAddress(),&address.GetAddr().sin_addr.s_addr);
+		inet_pton(AF_INET,address.GetAddress(),&address.GetAddr().sin_addr.s_addr);
 		address.GetAddr().sin_port=htons(1234);
 		return true;
 	}

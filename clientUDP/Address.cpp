@@ -17,6 +17,7 @@ Address::Address(unsigned char a, unsigned char b, unsigned char c, unsigned cha
 	myaddr.sin_port=htons(port);
 }
 
-unsigned int Address::GetAddress() const {
+const char * Address::GetAddress()	{
+	this->address = this->GetA + "." +this->GetB + "." + this->GetC + "." +this->GetD; 
 	return this->address;
 }
