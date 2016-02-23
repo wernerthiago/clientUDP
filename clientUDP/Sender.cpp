@@ -67,7 +67,7 @@ int main(){
 	Address address(127,0,0,1,1234);
 
 	socket.Open(address);
-	if(socket.Send(address,"Funcionouuuuuuuuu")){
+	if(socket.Send(address,"Funcionouuuuu")){
 		cout << "Enviado!" << endl;
 	}else{
 		cout << "Vish, deu erro..." << endl;

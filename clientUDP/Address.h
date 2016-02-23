@@ -29,10 +29,18 @@ public:
 	Address(unsigned char a, unsigned char b, unsigned char c, unsigned char d, unsigned short port);
 	Address(unsigned int address,unsigned short port);
 	std::string GetAddress();
-	unsigned char GetA() const;
-	unsigned char GetB() const;
-	unsigned char GetC() const;
-	unsigned char GetD() const;
+	unsigned char GetA(){
+		return a;
+	}
+	unsigned char GetB(){
+		return b;
+	}
+	unsigned char GetC(){
+		return c;
+	}
+	unsigned char GetD(){
+		return d;
+	}
 //	struct sockaddr_in GetAddr(){
 //		return myaddr;
 //	}
@@ -40,6 +48,10 @@ public:
 	struct sockaddr_in myaddr;
 private:
 	std::string address;
+	unsigned char a;
+	unsigned char b;
+	unsigned char c;
+	unsigned char d;
 	unsigned short port;
 };
 

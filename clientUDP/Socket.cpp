@@ -26,7 +26,7 @@ bool Socket::Open(Address address) {
 			std::cout << "Erro no bind" << std::endl;
 			return false;
 		}
-		inet_pton(AF_INET,address.GetAddress(),&address.myaddr.sin_addr.s_addr);
+		inet_pton(AF_INET,address.GetAddress().c_str(),&address.myaddr.sin_addr.s_addr);
 		address.myaddr.sin_port=htons(1234);
 		return true;
 	}
@@ -37,7 +37,7 @@ void Socket::Close() {
 }
 
 bool Socket::Send(Address address, std::string data) {
-	if(sendto(this->fd, data, data.size(), 0, (struct sockaddr *)&address.myaddr, sizeof(address.myaddr))!=data.size()){
+	if(sendto(this->fd, data.c_str(), data.size(), 0, (struct sockaddr *)&address.myaddr, sizeof(address.myaddr))!=data.size()){
 		std::cout << "Erro no envio do pacote!" << std::endl;
 		return false;
 	}else{
@@ -45,13 +45,15 @@ bool Socket::Send(Address address, std::string data) {
 	}
 }
 
-std::string Socket::Receive(Address sender,  std::string data) {
+std::string Socket::Receive(Address sender) {
 	int received(0);
+	char data[256];
 	int addrLength = sizeof(sender.myaddr);
-	if((received = recvfrom(this->fd,data,data.size(),0,(sockaddr *)&sender.myaddr,(socklen_t*)&addrLength)) < 0) {
+	if((received = recvfrom(this->fd,data,sizeof(data),0,(sockaddr *)&sender.myaddr,(socklen_t*)&addrLength)) < 0) {
 		std::cout << "Erro na recepcao do pacote!" << std::endl;
 		return 0;
 	}else{
-		return data;
+		std::string ss = data;
+		return ss;
 	}
 }
